@@ -245,13 +245,6 @@ Files marked `[NEW]` were created for this modified version. All other files are
 
 ## Screenshots
 
-To add screenshots to this README on GitHub:
-
-1. Create a `screenshots/` folder in the repository root
-2. Place PNG files there (e.g., `main-list.png`, `main-tiles.png`, `achievements.png`, `idle-settings.png`, `active-games.png`)
-3. Reference them in this README using:
-
-```markdown
 ### Main Window -- List View
 ![Main Window - List View](screenshots/main-list.png)
 
@@ -266,15 +259,6 @@ To add screenshots to this README on GitHub:
 
 ### Active Games Manager
 ![Active Games Manager](screenshots/active-games.png)
-```
-
-Recommended screenshots:
-- Main window in list view (with checkboxes and playtime columns visible)
-- Main window in tile view (showing game cover cards)
-- Achievement editor (showing dark theme, custom checkboxes, achievement list)
-- Idle settings dialog (showing mode selection)
-- Active games manager (showing running processes)
-- Settings dialog (language and view mode)
 
 ---
 
