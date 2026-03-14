@@ -2,7 +2,7 @@
 
 **[EN](README.md)** | **[RU](README.ru.md)**
 
-A heavily modified version of [Steam Achievement Manager](https://github.com/gibbed/SteamAchievementManager) by gibbed. This fork adds a modern dark UI, idle modes, localization, playtime tracking, and many quality-of-life improvements while preserving full compatibility with the original Steam API layer.
+A heavily modified version of [Steam Achievement Manager](https://github.com/gibbed/SteamAchievementManager) by gibbed. This fork adds a modern dark UI, Steam Web API integration, idle modes, VAC protection, profile panel, parallel loading, localization, and many quality-of-life improvements while preserving full compatibility with the original Steam API layer.
 
 [![Download Latest Release](https://img.shields.io/github/v/release/TrooSlash/SteamAchievementManager-7.0.40-MODIFIED?label=Download&style=for-the-badge)](https://github.com/TrooSlash/SteamAchievementManager-7.0.40-MODIFIED/releases/latest)
 
@@ -16,8 +16,13 @@ A heavily modified version of [Steam Achievement Manager](https://github.com/gib
   - [New Features](#new-features)
   - [UI Overhaul](#ui-overhaul)
   - [Improvements and Fixes](#improvements-and-fixes)
-  - [Removed / Unchanged](#removed--unchanged)
+  - [Unchanged](#unchanged)
 - [Feature Details](#feature-details)
+  - [Steam Web API Integration](#steam-web-api-integration)
+  - [Profile Panel](#profile-panel)
+  - [Achievement Progress](#achievement-progress)
+  - [VAC Protection](#vac-protection)
+  - [Three-Phase Loading](#three-phase-loading)
   - [Idle Modes](#idle-modes)
   - [Active Games Manager](#active-games-manager)
   - [View Modes](#view-modes)
@@ -37,6 +42,7 @@ A heavily modified version of [Steam Achievement Manager](https://github.com/gib
 - .NET Framework 4.8
 - Steam client running with an authenticated account
 - Platform: x86 (32-bit)
+- Steam Web API key (optional, enables additional features)
 
 ## Build
 
@@ -54,67 +60,131 @@ Output: `upload\SAM.Picker.exe`, `upload\SAM.Game.exe`
 
 | Feature | Description |
 |---------|-------------|
-| **6 Idle Modes** | Simple, Sequential, Round-Robin, Target Hours, Schedule, Anti-Idle -- all managed through a unified dialog |
-| **Active Games Manager** | Centralized window to monitor, pause, resume, and stop all running idle processes |
-| **Playtime Display** | Hours played and last played date extracted from local Steam files (no API key needed) |
-| **Tile / List View Toggle** | Switch between card-style tile view and detailed list view with sortable columns |
-| **Batch Game Selection** | Checkboxes in list view to select up to 32 games for batch idle operations |
-| **Localization System** | English and Russian UI with runtime language switching |
-| **Settings Dialog** | Unified settings popup for language and view mode preferences |
-| **Image Caching** | Game icons and covers downloaded once and cached in memory for the session |
-| **Graceful Idle Shutdown** | Named EventWaitHandle signals allow clean SteamAPI disconnection instead of process kill |
-| **Manifest Cleanup** | Automatic removal of orphaned `appmanifest_*.acf` files created during idle |
+| **Steam Web API** | Optional API key enables full game library detection, achievement stats, profile display, and VAC protection |
+| **Profile Panel** | Avatar, nickname, online status, country, Steam level, XP progress, badge count |
+| **Achievement Progress** | Per-game unlocked/total achievement counter in the game list (requires API key) |
+| **Global Achievement %** | Each achievement shows what percentage of all players unlocked it |
+| **VAC Protection** | Automatic detection of VAC-protected games with warning before achievement modification |
+| **Three-Phase Loading** | Local games shown instantly, game types and API data loaded in background |
+| **6 Idle Modes** | Simple, Sequential, Round-Robin, Target Hours, Schedule, Anti-Idle |
+| **Active Games Manager** | Centralized window to monitor, pause, resume, and stop idle processes |
+| **Playtime Display** | Hours played and last played date from local Steam files (no API key needed) |
+| **Tile / List View** | Switch between card-style tile view and detailed list view with sortable columns |
+| **Batch Game Selection** | Checkboxes in list view for selecting up to 32 games |
+| **Localization** | English and Russian UI with runtime language switching |
+| **Parallel Downloads** | Up to 6 concurrent logo downloads and 8 concurrent achievement API requests |
+| **Image Caching** | Game icons cached in memory, persist across refresh without re-downloading |
+| **Graceful Idle Shutdown** | Named EventWaitHandle signals for clean SteamAPI disconnection |
+| **Manifest Cleanup** | Automatic removal of orphaned `appmanifest_*.acf` files after idle |
 | **Batch Unlock via CLI** | `--unlock-all` argument to unlock all achievements without GUI |
 
 ### UI Overhaul
 
-The entire application uses a custom dark theme inspired by modern code editors:
+The entire application uses a custom dark theme:
 
 | Element | Color |
 |---------|-------|
-| Background | #181A20 |
-| Surface | #1E2028 |
-| Toolbar | #252830 |
-| Accent | #6C63FF |
-| Secondary Accent | #00D9A3 |
-| Text | #E8EAED |
-| Text Secondary | #9AA0A6 |
-| Selection | #2E2B4A |
+| Background | `#181A20` |
+| Surface | `#1E2028` |
+| Toolbar | `#252830` |
+| Accent | `#6C63FF` |
+| Secondary Accent | `#00D9A3` |
+| Text | `#E8EAED` |
+| Text Secondary | `#9AA0A6` |
+| Selection | `#2E2B4A` |
 
-Applied to both windows (Game Picker and Achievement Editor), including:
-- Custom OwnerDraw rendering for ListView items (games and achievements)
-- Dark-styled TabControl with accent underline on active tab
+Applied to all windows:
+- Custom OwnerDraw rendering for ListView items
+- Dark TabControl with accent underline on active tab
 - Dark toolbars, status bars, context menus, and dialogs
 - Alternating row colors in list views
-- Custom checkbox rendering (no native WinForms green highlights)
+- Custom checkbox rendering
 
 ### Improvements and Fixes
 
 | Area | Change |
 |------|--------|
-| **Startup Performance** | Deferred image URL resolution -- saves ~3000 native IPC calls on startup |
-| **Progress Indicator** | Status bar shows "Checking game ownership... N%" during loading |
-| **BeginInvoke Crash** | Added `IsHandleCreated` guard before cross-thread BeginInvoke calls |
-| **Exception Handling** | Broad `catch(Exception)` in achievement download prevents silent crashes |
+| **Startup** | Three-phase parallel loading: local scan, XML types, API enrichment |
+| **Logo Downloads** | 6 concurrent Task.Run downloads instead of single BackgroundWorker |
+| **Achievement Loading** | 8 concurrent API requests via SemaphoreSlim with incremental UI updates |
+| **Image Cache** | Logos persist across refresh -- no re-downloading within the same session |
+| **Progress Indicator** | Status bar shows loading phase and progress counters |
+| **BeginInvoke Safety** | `IsHandleCreated` guard before all cross-thread BeginInvoke calls |
+| **Exception Handling** | Broad `catch(Exception)` prevents silent crashes during downloads |
 | **Statistics Tab** | Automatically hidden when a game has 0 statistics |
-| **Column Sorting** | Clickable column headers with ascending/descending toggle and sort indicator arrows |
-| **Achievement Icons** | Reduced from 64x64 to 32x32 for compact, consistent display |
-| **ListView Borders** | Removed native 3D borders from all list views |
-| **Tab Borders** | Painted over native TabControl borders to match dark theme |
-| **Protected Achievements** | Subtle dark red background (#281919) to indicate non-modifiable achievements |
-| **Thread Safety** | Thread-safe HashSet for concurrent icon download tracking |
-| **Memory** | WebClient proper disposal, Bitmap stream handling improvements |
+| **Column Sorting** | Clickable headers with ascending/descending toggle and arrow indicators |
+| **Achievement Icons** | Reduced from 64x64 to 32x32 for compact display |
+| **Protected Achievements** | Dark red background (`#281919`) for non-modifiable achievements |
+| **Thread Safety** | Thread-safe collections for concurrent download tracking |
+| **Memory** | Proper WebClient disposal and Bitmap stream handling |
 
-### Removed / Unchanged
+### Unchanged
 
-- **SAM.API** -- The entire Steam API layer is untouched. All native interop, vtable calls, and pipe management remain identical to the original.
-- **Game detection logic** -- Steam game enumeration, ownership checks, and app data retrieval are unchanged.
-- **Achievement read/write** -- The core `SetAchievement`, `GetAchievement`, and `StoreStats` calls are original code.
-- **No card farming** -- Card farming was prototyped and removed due to Steam API limitations.
+- **SAM.API** -- The entire Steam API interop layer is untouched. Native vtable calls and pipe management are identical to the original.
+- **Game detection logic** -- Steam game enumeration, ownership checks, and app data retrieval are original code.
+- **Achievement read/write** -- The core `SetAchievement`, `GetAchievement`, and `StoreStats` calls are unmodified.
 
 ---
 
 ## Feature Details
+
+### Steam Web API Integration
+
+An optional Steam Web API key unlocks additional features. The key is configured in Settings (gear icon) and stored locally in `sam_settings.ini`.
+
+What the API key enables:
+- Full game library detection (finds uninstalled and free-to-play games)
+- Achievement progress column in the game list
+- Profile panel with avatar, level, and badges
+- VAC protection warnings in the achievement editor
+- Global achievement unlock percentages
+
+How to get a key:
+1. Open [steamcommunity.com/dev/apikey](https://steamcommunity.com/dev/apikey)
+2. Enter any domain name (e.g., `localhost`)
+3. Copy the generated key into Settings
+
+The key is free, requires no approval, and is stored locally until the application is reinstalled.
+
+### Profile Panel
+
+When an API key is configured, a profile panel appears at the top of the main window:
+
+- Avatar (64x64)
+- Persona name with colored online status indicator
+- Country code
+- Steam level displayed in an accent-colored badge
+- XP progress bar (current / needed for next level)
+- Total badge count
+
+Profile data is loaded asynchronously on startup.
+
+### Achievement Progress
+
+With an API key, the game list gains an "Achievements" column showing the unlock ratio per game (e.g., `12/50`). Achievements are loaded in parallel (8 concurrent requests) with incremental UI updates. Games without achievements display a dash. The column is automatically hidden when no API key is configured.
+
+### VAC Protection
+
+The achievement editor automatically checks whether a game uses VAC (Valve Anti-Cheat) or third-party anti-cheat systems (EAC, BattlEye). If detected:
+
+- A warning panel is displayed at the top of the editor
+- Achievement modification is blocked by default
+- An override button allows the user to proceed at their own risk with an explicit confirmation dialog
+- The "Unlock All" button shows a separate VAC-specific warning
+
+This protection does not require an API key -- it uses the Steam store page category data.
+
+### Three-Phase Loading
+
+Game loading is split into three phases for faster startup:
+
+| Phase | Source | Speed | Purpose |
+|-------|--------|-------|---------|
+| 1 | Local Steam files | Instant | Scan appmanifest files, registry, localconfig.vdf. Games appear immediately. |
+| 2 | Remote XML | Network | Download game type database. Update types (normal/demo/mod/junk). |
+| 3 | Steam Web API | Network | Fetch additional owned games not found locally. Requires API key. |
+
+Playtime data is applied after Phase 1. Logo downloads start after Phase 1. Achievement loading starts after Phase 3 completes.
 
 ### Idle Modes
 
@@ -129,7 +199,7 @@ Six modes available through the Idle Games button on the toolbar:
 | **Schedule** | Run only during specified hours (e.g., 02:00 to 08:00). |
 | **Anti-Idle** | Periodic restart of idle processes to prevent Steam timeout. |
 
-When no games are checked, all currently displayed games are used. Maximum 32 games per session (Steam limit).
+When no games are checked, all currently displayed games are used. Maximum 32 games per session (Steam limit). A counter at the bottom shows how many games are selected (e.g., `5/32`).
 
 ### Active Games Manager
 
@@ -139,23 +209,23 @@ A dedicated window that opens when idle sessions start:
 - Per-game controls: Pause / Resume / Stop
 - Elapsed time counter for each game
 - "Stop All" button with confirmation dialog
-- Graceful shutdown: signals processes via named events, falls back to kill after 3-second timeout
+- Graceful shutdown via named events, falls back to process kill after 3-second timeout
 - Cleans up orphaned Steam manifest files on close
 
 ### View Modes
 
 **List View** (default):
-- Columns: Game, AppId, Type, Hours, Last Played
-- Sortable by clicking column headers
-- Checkboxes for batch selection
+- Columns: Game, AppId, Type, Hours, Last Played, Achievements (with API key)
+- Sortable by clicking column headers (ascending/descending toggle)
+- Checkboxes for batch selection (up to 32 games)
 - Small 32x32 game icons
 
 **Tile View**:
-- Card-style grid with game cover images
+- Card-style grid with game cover images (184x69)
 - Custom OwnerDraw rendering with hover highlight
 - Virtual mode for smooth scrolling with large libraries
 
-Toggle between views through the Settings dialog (gear icon).
+Toggle between views through the Settings dialog.
 
 ### Playtime Data
 
@@ -169,30 +239,39 @@ No Steam Web API key is required. AccountId is computed as the lower 32 bits of 
 
 ### Localization
 
-Two languages supported: **English** (default) and **Russian**.
+Two languages: **English** (default) and **Russian**.
 
-Switch language through the Settings dialog (gear icon on toolbar). The language setting is propagated to the Achievement Editor window via environment variable.
+Switch language through the Settings dialog (gear icon on toolbar). The language setting is propagated to the Achievement Editor window via the `SAM_LANGUAGE` environment variable.
 
 Localized elements:
 - All toolbar buttons and tooltips
-- Status bar messages
+- Status bar messages and progress indicators
 - Dialog boxes and error messages
 - Column headers
 - Idle mode names and descriptions
 - Achievement editor labels
+- VAC warning messages
+- API key instructions
 
-Game names are NOT translated (they come from Steam).
+Game names are not translated (they come from Steam).
 
 ### Achievement Editor
 
-When opening a game, the achievement editor shows:
+When opening a game, the editor shows:
 
+**Achievements tab:**
 - Achievement list with custom OwnerDraw (icon, name, description, unlock time)
+- Global unlock percentage per achievement (fetched from Steam API, no key required)
 - Toolbar: Lock All / Invert / Unlock All / Show Locked Only / Show Unlocked Only / Filter
-- Custom dark checkboxes (checked = teal filled with white checkmark)
+- Custom dark checkboxes (checked = teal fill with white checkmark)
 - Protected achievements shown with dark red background and blocked from modification
-- Statistics tab (auto-hidden if game has no stats)
-- Commit Changes button to save modifications to Steam
+- VAC warning panel with override option (when anti-cheat detected)
+
+**Statistics tab:**
+- Game statistics with editable values
+- Automatically hidden when a game has 0 statistics
+
+**Commit Changes** button to save modifications to Steam.
 
 ---
 
@@ -218,25 +297,28 @@ SAM.Game.exe <AppId> --unlock-all       -- Unlock all achievements (no GUI)
 ```
 SAM.sln
 SAM.API/                           -- Steam API library (UNCHANGED)
-  Steam/                           -- Steam client connection
+  Steam/                           -- Steam client connection and pipe management
   Wrappers/                        -- Interface wrappers (SteamUserStats, SteamApps, etc.)
   Types/                           -- Data types (UserStatsReceived, AchievementInfo, etc.)
 
-SAM.Picker/                        -- Main application
-  GamePicker.cs                    -- Main form: game list, filters, sorting, idle launch
+SAM.Picker/                        -- Main application (game library browser)
+  GamePicker.cs                    -- Main form: game list, filters, sorting, parallel loading
   GamePicker.Designer.cs           -- Form layout and control definitions
-  GameInfo.cs                      -- Game data model
+  GameInfo.cs                      -- Game data model (id, type, playtime, achievements)
   MyListView.cs                    -- Custom ListView with double-buffering
+  ProfilePanel.cs                  -- [NEW] Steam profile display panel
   PlaytimeReader.cs                -- [NEW] localconfig.vdf parser for playtime data
+  SteamWebApi.cs                   -- [NEW] Steam Web API client (achievements, profile, badges)
+  AppSettings.cs                   -- [NEW] Persistent settings (API key storage)
   ActiveGamesForm.cs               -- [NEW] Active idle games monitor
   IdleSettingsDialog.cs            -- [NEW] Idle mode configuration dialog
-  SettingsDialog.cs                -- [NEW] Language and view settings dialog
+  SettingsDialog.cs                -- [NEW] Language, view, and API key settings
   Localization.cs                  -- [NEW] English/Russian localization system
   DarkTheme.cs                     -- [NEW] Dark theme engine with custom renderers
 
-SAM.Game/                          -- Achievement/Statistics editor
+SAM.Game/                          -- Achievement and statistics editor
   Program.cs                       -- Entry point, headless modes, graceful shutdown
-  Manager.cs                       -- Achievement/stats form with OwnerDraw
+  Manager.cs                       -- Achievement/stats form, VAC detection, global %
   Manager.Designer.cs              -- Form layout
   Stats/AchievementInfo.cs         -- Achievement data model
   DarkTheme.cs                     -- [NEW] Dark theme for editor window
