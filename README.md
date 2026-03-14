@@ -2,7 +2,7 @@
 
 **[EN](README.md)** | **[RU](README.ru.md)**
 
-A heavily modified version of [Steam Achievement Manager](https://github.com/gibbed/SteamAchievementManager) by gibbed. This fork adds a modern dark UI, Steam Web API integration, idle modes, VAC protection, profile panel, parallel loading, localization, and many quality-of-life improvements while preserving full compatibility with the original Steam API layer.
+A heavily modified version of [Steam Achievement Manager](https://github.com/gibbed/SteamAchievementManager) by gibbed. This fork adds Steam Web API integration, idle modes, VAC protection, profile panel, parallel loading, localization, and many quality-of-life improvements while preserving full compatibility with the original Steam API layer.
 
 [![Download Latest Release](https://img.shields.io/github/v/release/TrooSlash/SteamAchievementManager-7.0.40-MODIFIED?label=Download&style=for-the-badge)](https://github.com/TrooSlash/SteamAchievementManager-7.0.40-MODIFIED/releases/latest)
 
@@ -14,7 +14,6 @@ A heavily modified version of [Steam Achievement Manager](https://github.com/gib
 - [Build](#build)
 - [Changes from Original](#changes-from-original)
   - [New Features](#new-features)
-  - [UI Overhaul](#ui-overhaul)
   - [Improvements and Fixes](#improvements-and-fixes)
   - [Unchanged](#unchanged)
 - [Feature Details](#feature-details)
@@ -78,28 +77,6 @@ Output: `upload\SAM.Picker.exe`, `upload\SAM.Game.exe`
 | **Manifest Cleanup** | Automatic removal of orphaned `appmanifest_*.acf` files after idle |
 | **Batch Unlock via CLI** | `--unlock-all` argument to unlock all achievements without GUI |
 
-### UI Overhaul
-
-The entire application uses a custom dark theme:
-
-| Element | Color |
-|---------|-------|
-| Background | `#181A20` |
-| Surface | `#1E2028` |
-| Toolbar | `#252830` |
-| Accent | `#6C63FF` |
-| Secondary Accent | `#00D9A3` |
-| Text | `#E8EAED` |
-| Text Secondary | `#9AA0A6` |
-| Selection | `#2E2B4A` |
-
-Applied to all windows:
-- Custom OwnerDraw rendering for ListView items
-- Dark TabControl with accent underline on active tab
-- Dark toolbars, status bars, context menus, and dialogs
-- Alternating row colors in list views
-- Custom checkbox rendering
-
 ### Improvements and Fixes
 
 | Area | Change |
@@ -114,7 +91,7 @@ Applied to all windows:
 | **Statistics Tab** | Automatically hidden when a game has 0 statistics |
 | **Column Sorting** | Clickable headers with ascending/descending toggle and arrow indicators |
 | **Achievement Icons** | Reduced from 64x64 to 32x32 for compact display |
-| **Protected Achievements** | Dark red background (`#281919`) for non-modifiable achievements |
+| **Protected Achievements** | Visual highlight for non-modifiable achievements |
 | **Thread Safety** | Thread-safe collections for concurrent download tracking |
 | **Memory** | Proper WebClient disposal and Bitmap stream handling |
 
@@ -260,11 +237,11 @@ Game names are not translated (they come from Steam).
 When opening a game, the editor shows:
 
 **Achievements tab:**
-- Achievement list with custom OwnerDraw (icon, name, description, unlock time)
+- Achievement list with OwnerDraw rendering (icon, name, description, unlock time)
 - Global unlock percentage per achievement (fetched from Steam API, no key required)
 - Toolbar: Lock All / Invert / Unlock All / Show Locked Only / Show Unlocked Only / Filter
-- Custom dark checkboxes (checked = teal fill with white checkmark)
-- Protected achievements shown with dark red background and blocked from modification
+- Custom checkboxes (checked = teal fill with white checkmark)
+- Protected achievements highlighted and blocked from modification
 - VAC warning panel with override option (when anti-cheat detected)
 
 **Statistics tab:**
@@ -314,14 +291,14 @@ SAM.Picker/                        -- Main application (game library browser)
   IdleSettingsDialog.cs            -- [NEW] Idle mode configuration dialog
   SettingsDialog.cs                -- [NEW] Language, view, and API key settings
   Localization.cs                  -- [NEW] English/Russian localization system
-  DarkTheme.cs                     -- [NEW] Dark theme engine with custom renderers
+  DarkTheme.cs                     -- [NEW] Theme engine with custom renderers
 
 SAM.Game/                          -- Achievement and statistics editor
   Program.cs                       -- Entry point, headless modes, graceful shutdown
   Manager.cs                       -- Achievement/stats form, VAC detection, global %
   Manager.Designer.cs              -- Form layout
   Stats/AchievementInfo.cs         -- Achievement data model
-  DarkTheme.cs                     -- [NEW] Dark theme for editor window
+  DarkTheme.cs                     -- [NEW] Theme for editor window
   GameLocalization.cs              -- [NEW] Editor localization (reads SAM_LANGUAGE env var)
 ```
 
