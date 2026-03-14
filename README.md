@@ -1,4 +1,4 @@
-# SAM Evolved
+# SAM Evolved (Steam Achievement Manager)
 
 **[EN](README.md)** | **[RU](README.ru.md)**
 
