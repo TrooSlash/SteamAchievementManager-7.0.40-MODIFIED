@@ -4,7 +4,7 @@
 
 Глубоко переработанная версия [Steam Achievement Manager](https://github.com/gibbed/SteamAchievementManager) от gibbed. Добавлена интеграция Steam Web API, режимы простоя, защита VAC, панель профиля, параллельная загрузка, локализация и множество улучшений. Полная совместимость с оригинальным Steam API.
 
-[![Скачать последний релиз](https://img.shields.io/github/v/release/TrooSlash/SteamAchievementManager-7.0.40-MODIFIED?label=%D0%A1%D0%BA%D0%B0%D1%87%D0%B0%D1%82%D1%8C&style=for-the-badge)](https://github.com/TrooSlash/SteamAchievementManager-7.0.40-MODIFIED/releases/latest)
+[![Скачать последний релиз](https://img.shields.io/github/v/release/TrooSlash/SAM-Evolved_Steam_Achievement_Manager?label=%D0%A1%D0%BA%D0%B0%D1%87%D0%B0%D1%82%D1%8C&style=for-the-badge)](https://github.com/TrooSlash/SAM-Evolved_Steam_Achievement_Manager/releases/latest)
 
 ---
 

@@ -4,7 +4,7 @@
 
 A heavily modified version of [Steam Achievement Manager](https://github.com/gibbed/SteamAchievementManager) by gibbed. This fork adds Steam Web API integration, idle modes, VAC protection, profile panel, parallel loading, localization, and many quality-of-life improvements while preserving full compatibility with the original Steam API layer.
 
-[![Download Latest Release](https://img.shields.io/github/v/release/TrooSlash/SteamAchievementManager-7.0.40-MODIFIED?label=Download&style=for-the-badge)](https://github.com/TrooSlash/SteamAchievementManager-7.0.40-MODIFIED/releases/latest)
+[![Download Latest Release](https://img.shields.io/github/v/release/TrooSlash/SAM-Evolved_Steam_Achievement_Manager?label=Download&style=for-the-badge)](https://github.com/TrooSlash/SAM-Evolved_Steam_Achievement_Manager/releases/latest)
 
 ---
 
