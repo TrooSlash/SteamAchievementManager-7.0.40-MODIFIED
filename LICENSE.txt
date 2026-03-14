@@ -20,3 +20,27 @@ freely, subject to the following restrictions:
 
 3. This notice may not be removed or altered from any source
    distribution.
+
+---
+
+Modifications Notice
+
+This is a modified version of Steam Achievement Manager by gibbed.
+Original source: https://github.com/gibbed/SteamAchievementManager
+
+Modifications copyright (c) 2026 troos
+
+Changes include:
+- Dark theme UI for all application windows
+- 6 idle modes (Simple, Sequential, Round-Robin, Target Hours, Schedule, Anti-Idle)
+- Active Games Manager with per-game controls
+- Playtime and last played data from local Steam files
+- List and tile view modes with sortable columns
+- Batch game selection via checkboxes
+- Localization system (English, Russian)
+- Custom OwnerDraw rendering for achievements
+- Graceful idle shutdown via named events
+- Startup performance optimizations
+- Multiple bug fixes
+
+This modified version is distributed under the same zlib license as the original.

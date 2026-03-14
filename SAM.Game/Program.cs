@@ -22,6 +22,8 @@
 
 using System;
 using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 using System.Security.AccessControl;
@@ -34,6 +36,13 @@ namespace SAM.Game
         [STAThread]
         public static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, e) =>
+            {
+                var name = new AssemblyName(e.Name).Name + ".dll";
+                var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "lib", name);
+                return File.Exists(path) ? Assembly.LoadFrom(path) : null;
+            };
+
             long appId;
 
             if (args.Length == 0)
