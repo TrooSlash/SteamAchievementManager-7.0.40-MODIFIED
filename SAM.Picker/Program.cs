@@ -23,6 +23,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Security;
 using System.Windows.Forms;
 
 namespace SAM.Picker
@@ -36,7 +37,36 @@ namespace SAM.Picker
             {
                 var name = new AssemblyName(e.Name).Name + ".dll";
                 var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "lib", name);
-                return File.Exists(path) ? Assembly.LoadFrom(path) : null;
+                if (File.Exists(path) == false)
+                {
+                    return null;
+                }
+
+                try
+                {
+                    return Assembly.LoadFrom(path);
+                }
+                catch (FileLoadException)
+                {
+                    // Some users launch from ZIP/OneDrive extracted folders where MOTW blocks LoadFrom.
+                }
+                catch (NotSupportedException)
+                {
+                    // .NET can reject assemblies treated as remote sources.
+                }
+                catch (SecurityException)
+                {
+                    // Fallback to in-memory load when file trust metadata blocks direct load.
+                }
+
+                try
+                {
+                    return Assembly.Load(File.ReadAllBytes(path));
+                }
+                catch
+                {
+                    return null;
+                }
             };
 
             if (API.Steam.GetInstallPath() == Application.StartupPath)

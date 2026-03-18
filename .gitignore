@@ -12,6 +12,9 @@
 **/Properties/launchSettings.json
 private/
 upload/
+release_stage/
+sam_settings.ini
+**/sam_settings.ini
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

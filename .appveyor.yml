@@ -46,7 +46,8 @@ before_build:
 after_build:
   - set TZ=GMT
   - git log . > git-log.txt
-  - 7z a -r -tzip -mx=9 -x!*/LICENSE.txt SAM-Evolved-%APPVEYOR_BUILD_VERSION%.zip ./LICENSE.txt ./git-log.txt ./upload/*.exe ./upload/*.dll
+  - powershell -NoProfile -ExecutionPolicy Bypass -Command "$ErrorActionPreference='Stop'; $stage='release_stage'; if (Test-Path $stage) { Remove-Item $stage -Recurse -Force }; New-Item -ItemType Directory -Path $stage | Out-Null; New-Item -ItemType Directory -Path (Join-Path $stage 'lib') | Out-Null; Copy-Item './upload/SAM.Picker.exe' $stage; Copy-Item './upload/SAM.Game.exe' $stage; Copy-Item './upload/SAM.API.dll' $stage; Copy-Item './upload/*.config' (Join-Path $stage 'lib'); Copy-Item './upload/System.*.dll' (Join-Path $stage 'lib')"
+  - 7z a -r -tzip -mx=9 -x!*/LICENSE.txt SAM-Evolved-%APPVEYOR_BUILD_VERSION%.zip ./LICENSE.txt ./git-log.txt ./release_stage/*
 
 artifacts:
   - path: '*-*.zip'

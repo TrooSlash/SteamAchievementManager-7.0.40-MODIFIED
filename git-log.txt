@@ -1,0 +1,102 @@
+commit 503b083568d6adaf645138765fd0816cb0e39060
+Author: Timofeev Kirill <trooslash@ya.ru>
+Date:   Sun Mar 15 03:30:09 2026 +0300
+
+    Refactor code structure for improved readability and maintainability
+
+commit 9dbfa1cbc795f6db007d38f311202536bdc2388e
+Author: Timofeev Kirill <trooslash@ya.ru>
+Date:   Sun Mar 15 02:55:17 2026 +0300
+
+    Update download badge links in README files to reflect new repository name
+
+commit 083f1fb4b8389693af3712d1d2b3fb32d7c9a90b
+Author: Timofeev Kirill <trooslash@ya.ru>
+Date:   Sun Mar 15 02:46:14 2026 +0300
+
+    Update version numbers to 1.0.1 in project files and remove UI overhaul references from README
+
+commit 79f898c6caff91c0b7188822f583f8e6dcf05e88
+Author: Timofeev Kirill <trooslash@ya.ru>
+Date:   Sun Mar 15 02:35:21 2026 +0300
+
+    Update project title in README to include full name
+
+commit 5a306a2fa146428a631491b46f8a1ee75548ea59
+Author: Timofeev Kirill <trooslash@ya.ru>
+Date:   Sun Mar 15 02:34:54 2026 +0300
+
+    Update README.ru.md to include full project name
+
+commit c8377de341376585576e37b704c1a04d73ff8e55
+Author: Timofeev Kirill <trooslash@ya.ru>
+Date:   Sun Mar 15 02:32:26 2026 +0300
+
+    Rename project to SAM Evolved and update related files for consistency
+
+commit 02ba8f5624decb26de5338a29066d9124164f85b
+Author: Timofeev Kirill <trooslash@ya.ru>
+Date:   Sun Mar 15 02:25:16 2026 +0300
+
+    Update README.md and README.ru.md to include Steam Web API integration, profile panel, VAC protection, and additional features
+
+commit fb1616950ae030bd7005117c55bfa016ab6a09c4
+Author: Timofeev Kirill <trooslash@ya.ru>
+Date:   Sun Mar 15 02:15:33 2026 +0300
+
+    Add localization for achievements and API key validation
+    
+    - Added new localization strings for achievements and API key validation messages in Localization.cs.
+    - Updated the SettingsDialog to include a show/hide button for the API key and a test button to validate the API key.
+    - Enhanced the UI layout of the SettingsDialog to accommodate new elements.
+    - Introduced ProfilePanel to display user profile information including avatar, name, status, level, XP, and badge count.
+    - Implemented SteamWebApi to fetch player summaries, badges, achievements, and global achievement percentages from the Steam API.
+    - Added app.config for .NET Framework version specification.
+
+commit df2cfc61b0c75d417529356dd0e5e448f00b5cda
+Author: Timofeev Kirill <trooslash@ya.ru>
+Date:   Sat Mar 14 21:40:56 2026 +0300
+
+    Add Steam API key support and local game scanning functionality
+
+commit 608adccc7f2e37262c181f0f3421ca4787ed55a1
+Author: Timofeev Kirill <trooslash@ya.ru>
+Date:   Sat Mar 14 07:46:53 2026 +0300
+
+    Add Russian localization to README.md and create README.ru.md
+
+commit 1a33530cff17c786f42408759850676b995222fe
+Author: Timofeev Kirill <trooslash@ya.ru>
+Date:   Sat Mar 14 07:41:05 2026 +0300
+
+    Add animated GIFs for main window, achievement editor, and active games manager in README.md
+
+commit 2f4d9c7d6c2cfb5f9c506426909601d24271ff43
+Author: Timofeev Kirill <trooslash@ya.ru>
+Date:   Sat Mar 14 06:50:18 2026 +0300
+
+    Add download badge to README.md for easy access to latest release
+
+commit 8d18820037718bf6dcca84c3bb1b3417222e52d4
+Author: Timofeev Kirill <trooslash@ya.ru>
+Date:   Sat Mar 14 06:43:27 2026 +0300
+
+    Refactor code structure for improved readability and maintainability
+
+commit 82a4552805c492918630dc5b267d9376efe11b0c
+Author: Timofeev Kirill <trooslash@ya.ru>
+Date:   Sat Mar 14 06:09:16 2026 +0300
+
+    Remove outdated instructions for adding screenshots in README.md
+
+commit 611420e634012339d090603212f900a4744cf3c0
+Author: Timofeev Kirill <trooslash@ya.ru>
+Date:   Sat Mar 14 06:05:40 2026 +0300
+
+    Remove ANALYSIS.md file containing project analysis and identified issues
+
+commit 883255bacbf175052263eedecf9b88b1fd144824
+Author: Timofeev Kirill <trooslash@ya.ru>
+Date:   Sat Mar 14 06:05:12 2026 +0300
+
+    Refactor code structure for improved readability and maintainability

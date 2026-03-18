@@ -5,9 +5,12 @@ namespace SAM.Picker
 {
     internal static class AppSettings
     {
-        private static readonly string SettingsPath = Path.Combine(
-            Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),
-            "sam_settings.ini");
+        private static readonly string BasePath =
+            Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+
+        private static readonly string SettingsPath = Path.Combine(BasePath, "lib", "sam_settings.ini");
+
+        private static readonly string LegacySettingsPath = Path.Combine(BasePath, "sam_settings.ini");
 
         public static string SteamApiKey { get; set; } = "";
 
@@ -15,8 +18,12 @@ namespace SAM.Picker
         {
             try
             {
-                if (!File.Exists(SettingsPath)) return;
-                foreach (var line in File.ReadAllLines(SettingsPath))
+                string path = File.Exists(SettingsPath)
+                    ? SettingsPath
+                    : LegacySettingsPath;
+
+                if (!File.Exists(path)) return;
+                foreach (var line in File.ReadAllLines(path))
                 {
                     var parts = line.Split(new[] { '=' }, 2);
                     if (parts.Length == 2 && parts[0].Trim() == "SteamApiKey")
@@ -32,6 +39,7 @@ namespace SAM.Picker
         {
             try
             {
+                Directory.CreateDirectory(Path.GetDirectoryName(SettingsPath));
                 File.WriteAllText(SettingsPath, $"SteamApiKey={SteamApiKey}\n");
             }
             catch { }
