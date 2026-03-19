@@ -893,39 +893,50 @@ namespace SAM.Picker
             lock (this._LogoLock)
                 this._ActiveLogoDownloads--;
 
-            if (bitmap != null && this._Games.TryGetValue(info.Id, out var gameInfo))
+            if (bitmap == null)
             {
-                this._GameListView.BeginUpdate();
-                var imageIndex = this._LogoImageList.Images.Count;
-                this._LogoImageList.Images.Add(gameInfo.ImageUrl, bitmap);
+                this.DownloadNextLogo();
+                return;
+            }
 
-                Bitmap smallIcon = new(32, 32);
-                using (var g = Graphics.FromImage(smallIcon))
-                {
-                    g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                    g.DrawImage(bitmap, 0, 0, 32, 32);
-                }
-                this._SmallIconImageList.Images.Add(gameInfo.ImageUrl, smallIcon);
-
+            if (!this._Games.TryGetValue(info.Id, out var gameInfo))
+            {
                 bitmap.Dispose();
-                smallIcon.Dispose();
+                this.DownloadNextLogo();
+                return;
+            }
 
-                gameInfo.ImageIndex = imageIndex;
+            this._GameListView.BeginUpdate();
+            var imageIndex = this._LogoImageList.Images.Count;
+            this._LogoImageList.Images.Add(gameInfo.ImageUrl, bitmap);
 
-                if (this._IsListView)
+            Bitmap smallIcon = new(32, 32);
+            using (var g = Graphics.FromImage(smallIcon))
+            {
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                g.DrawImage(bitmap, 0, 0, 32, 32);
+            }
+            this._SmallIconImageList.Images.Add(gameInfo.ImageUrl, smallIcon);
+
+            // ImageList creates internal copy, safe to dispose originals
+            bitmap.Dispose();
+            smallIcon.Dispose();
+
+            gameInfo.ImageIndex = imageIndex;
+
+            if (this._IsListView)
+            {
+                foreach (ListViewItem item in this._GameListView.Items)
                 {
-                    foreach (ListViewItem item in this._GameListView.Items)
+                    if (item.Tag == gameInfo)
                     {
-                        if (item.Tag == gameInfo)
-                        {
-                            item.ImageIndex = imageIndex;
-                            break;
-                        }
+                        item.ImageIndex = imageIndex;
+                        break;
                     }
                 }
-
-                this._GameListView.EndUpdate();
             }
+
+            this._GameListView.EndUpdate();
 
             this.DownloadNextLogo();
         }

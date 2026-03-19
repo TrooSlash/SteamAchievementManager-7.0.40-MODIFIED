@@ -135,12 +135,14 @@ namespace SAM.Picker
                 // Country code next to status
                 if (!string.IsNullOrEmpty(_countryCode))
                 {
-                    var statusSize = g.MeasureString(statusText, new Font("Segoe UI", 8.25f));
-                    using (var countryFont = new Font("Segoe UI", 8.25f))
-                    using (var countryBrush = new SolidBrush(DarkTheme.TextSecondary))
+                    using (var measureFont = new Font("Segoe UI", 8.25f))
                     {
-                        g.DrawString(_countryCode, countryFont, countryBrush,
-                            x + 12 + statusSize.Width + 6, statusY);
+                        var statusSize = g.MeasureString(statusText, measureFont);
+                        using (var countryBrush = new SolidBrush(DarkTheme.TextSecondary))
+                        {
+                            g.DrawString(_countryCode, measureFont, countryBrush,
+                                x + 12 + statusSize.Width + 6, statusY);
+                        }
                     }
                 }
 
