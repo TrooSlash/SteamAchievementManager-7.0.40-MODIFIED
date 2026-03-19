@@ -21,6 +21,7 @@ namespace SAM.Picker
         public int PlayerLevel;
         public int PlayerXp;
         public int PlayerXpNeededToLevelUp;
+        public int PlayerXpNeededCurrentLevel;
         public int BadgeCount;
     }
 
@@ -125,6 +126,7 @@ namespace SAM.Picker
                     PlayerLevel = ParseInt(json, "player_level"),
                     PlayerXp = ParseInt(json, "player_xp"),
                     PlayerXpNeededToLevelUp = ParseInt(json, "player_xp_needed_to_level_up"),
+                    PlayerXpNeededCurrentLevel = ParseInt(json, "player_xp_needed_current_level"),
                     BadgeCount = badgeMatches.Count
                 };
             }

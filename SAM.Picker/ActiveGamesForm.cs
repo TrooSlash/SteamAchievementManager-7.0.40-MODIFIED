@@ -571,7 +571,20 @@ namespace SAM.Picker
             }
             else if (!inWindow && !_SchedulePaused)
             {
-                KillAllRunning();
+                // Kill all running and update status to show they are paused due to schedule
+                foreach (var entry in _Entries)
+                {
+                    if (entry.Process != null)
+                    {
+                        if (!entry.IsPaused)
+                            entry.AccumulatedTime += DateTime.Now - entry.StartTime;
+                        KillProcess(entry);
+                        entry.Process = null;
+                        entry.ListItem.SubItems[2].Text = Localization.Get("StatusWaiting");
+                        entry.ListItem.SubItems[4].Text = "—";
+                        entry.ListItem.ForeColor = DarkTheme.TextMuted;
+                    }
+                }
                 _SchedulePaused = true;
             }
 
@@ -626,10 +639,11 @@ namespace SAM.Picker
             int startMin = _Settings.ScheduleStartHour * 60 + _Settings.ScheduleStartMinute;
             int endMin = _Settings.ScheduleEndHour * 60 + _Settings.ScheduleEndMinute;
 
+            // Use <= for endMin to include the final minute of the schedule
             if (startMin <= endMin)
-                return nowMin >= startMin && nowMin < endMin;
+                return nowMin >= startMin && nowMin <= endMin;
             else
-                return nowMin >= startMin || nowMin < endMin;
+                return nowMin >= startMin || nowMin <= endMin;
         }
 
         private void AutoStop()

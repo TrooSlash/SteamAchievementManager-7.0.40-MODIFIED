@@ -15,6 +15,7 @@ namespace SAM.Picker
         private int _level;
         private int _xp;
         private int _xpNeeded;
+        private int _xpNeededCurrentLevel;
         private int _badgeCount;
 
         public ProfilePanel()
@@ -34,6 +35,7 @@ namespace SAM.Picker
             _level = badges.PlayerLevel;
             _xp = badges.PlayerXp;
             _xpNeeded = badges.PlayerXpNeededToLevelUp;
+            _xpNeededCurrentLevel = badges.PlayerXpNeededCurrentLevel;
             _badgeCount = badges.BadgeCount;
             Visible = true;
             Invalidate();
@@ -167,20 +169,37 @@ namespace SAM.Picker
                     g.DrawString(levelText, levelFont, whiteBrush, lx, ly);
                 }
 
-                // XP progress bar
+                // XP progress bar with visible border
                 int barX = rightX + badgeSize + 14;
                 int barWidth = 100;
                 int barHeight = 8;
                 int barY = badgeY + 4;
 
-                int totalXp = _xp + _xpNeeded;
-                float progress = totalXp > 0 ? (float)_xp / totalXp : 0f;
+                // XP progress bar - correct formula:
+                // _xp = total XP earned (player_xp)
+                // _xpNeededCurrentLevel = XP threshold to REACH current level (player_xp_needed_current_level)
+                // _xpNeeded = XP remaining to next level (player_xp_needed_to_level_up)
+                // XP earned THIS level = _xp - _xpNeededCurrentLevel
+                // XP total for THIS level = xpEarned + _xpNeeded
+                int xpEarnedThisLevel = _xpNeededCurrentLevel > 0
+                    ? _xp - _xpNeededCurrentLevel
+                    : 0;
+                int xpTotalForLevel = xpEarnedThisLevel + _xpNeeded;
+                float progress = xpTotalForLevel > 0
+                    ? (float)xpEarnedThisLevel / xpTotalForLevel
+                    : 0f;
+                // Clamp progress to [0, 1] in case of edge cases
+                if (progress < 0) progress = 0;
+                if (progress > 1) progress = 1;
                 int fillWidth = (int)(barWidth * progress);
 
-                using (var bgBrush = new SolidBrush(DarkTheme.Border))
+                // Draw progress bar background (unfilled portion)
+                using (var bgBrush = new SolidBrush(DarkTheme.DarkBackground))
                 {
                     g.FillRectangle(bgBrush, barX, barY, barWidth, barHeight);
                 }
+
+                // Draw filled portion
                 if (fillWidth > 0)
                 {
                     using (var fillBrush = new SolidBrush(DarkTheme.Accent))
@@ -189,8 +208,14 @@ namespace SAM.Picker
                     }
                 }
 
-                // XP text
-                string xpText = string.Format("XP: {0}/{1}", _xp, totalXp);
+                // Draw border outline for visibility
+                using (var borderPen = new Pen(DarkTheme.Border, 1))
+                {
+                    g.DrawRectangle(borderPen, barX, barY, barWidth, barHeight);
+                }
+
+                // XP text - show earned / total for current level
+                string xpText = string.Format("XP: {0}/{1}", xpEarnedThisLevel, xpTotalForLevel);
                 using (var xpFont = new Font("Segoe UI", 7.5f))
                 using (var xpBrush = new SolidBrush(DarkTheme.TextSecondary))
                 {
