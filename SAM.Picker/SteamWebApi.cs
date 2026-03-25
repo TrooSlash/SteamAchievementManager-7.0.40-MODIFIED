@@ -48,9 +48,19 @@ namespace SAM.Picker
 
     internal static class SteamWebApi
     {
+        private class TimeoutWebClient : WebClient
+        {
+            protected override WebRequest GetWebRequest(Uri address)
+            {
+                var request = base.GetWebRequest(address);
+                request.Timeout = 10000;
+                return request;
+            }
+        }
+
         private static string DownloadString(string url)
         {
-            using (var client = new WebClient())
+            using (var client = new TimeoutWebClient())
             {
                 client.Encoding = System.Text.Encoding.UTF8;
                 return client.DownloadString(url);
@@ -283,7 +293,7 @@ namespace SAM.Picker
 
             try
             {
-                using (var client = new WebClient())
+                using (var client = new TimeoutWebClient())
                 {
                     byte[] data = client.DownloadData(url);
                     using (var stream = new MemoryStream(data))

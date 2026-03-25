@@ -66,13 +66,13 @@ namespace SAM.Picker
         {
             switch (state)
             {
-                case 1: return "Online";
-                case 2: return "Busy";
-                case 3: return "Away";
-                case 4: return "Snooze";
-                case 5: return "Looking to Trade";
-                case 6: return "Looking to Play";
-                default: return "Offline";
+                case 1: return Localization.Get("StatusOnline");
+                case 2: return Localization.Get("StatusBusy");
+                case 3: return Localization.Get("StatusAway");
+                case 4: return Localization.Get("StatusSnooze");
+                case 5: return Localization.Get("StatusLookingToTrade");
+                case 6: return Localization.Get("StatusLookingToPlay");
+                default: return Localization.Get("StatusOffline");
             }
         }
 

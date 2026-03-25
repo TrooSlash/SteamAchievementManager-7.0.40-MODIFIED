@@ -81,6 +81,8 @@ namespace SAM.Game
             { "VacUnlockAllWarning", "This game uses VAC / Anti-Cheat protection!\n\nUnlocking all achievements may result in:\n• Permanent VAC ban\n• Game ban\n• Loss of online features\n\nYes — Unlock all (at your own risk)\nNo — Cancel\n\nDo you want to unlock all achievements?" },
             { "VacActionWarning", "This game uses VAC / Anti-Cheat protection.\nModifying achievements or statistics may result in a ban.\n\nAre you sure you want to continue?" },
             { "VacClickWarning", "This game uses VAC / Anti-Cheat protection.\n\nChanging achievements may lead to a VAC ban or account restrictions.\nThis warning will only appear once per session.\n\nDo you want to edit achievements for this game?" },
+            { "LockAllConfirm", "Are you sure you want to lock all achievements?\nThis will uncheck all achievements in the list." },
+            { "Confirm", "Confirm" },
         };
 
         private static readonly Dictionary<string, string> Ru = new()
@@ -149,6 +151,8 @@ namespace SAM.Game
             { "VacUnlockAllWarning", "Эта игра использует VAC / античит защиту!\n\nРазблокировка всех достижений может привести к:\n• Перманентному VAC-бану\n• Бану в игре\n• Потере онлайн-функций\n\nДа — Разблокировать все (на свой риск)\nНет — Отмена\n\nРазблокировать все достижения?" },
             { "VacActionWarning", "Эта игра использует VAC / античит защиту.\nИзменение достижений или статистики может привести к бану.\n\nВы уверены, что хотите продолжить?" },
             { "VacClickWarning", "Эта игра использует VAC / античит защиту.\n\nИзменение достижений может привести к VAC-бану или ограничениям аккаунта.\nЭто предупреждение появится только один раз за сессию.\n\nХотите редактировать достижения этой игры?" },
+            { "LockAllConfirm", "Вы уверены, что хотите заблокировать все достижения?\nЭто снимет отметку со всех достижений в списке." },
+            { "Confirm", "Подтверждение" },
         };
 
         public static string Get(string key)

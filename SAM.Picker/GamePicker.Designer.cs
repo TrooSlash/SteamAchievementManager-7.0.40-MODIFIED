@@ -81,7 +81,7 @@
             // _SmallIconImageList
             //
             this._SmallIconImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth24Bit;
-            this._SmallIconImageList.ImageSize = new System.Drawing.Size(32, 32);
+            this._SmallIconImageList.ImageSize = new System.Drawing.Size(36, 36);
             this._SmallIconImageList.TransparentColor = System.Drawing.Color.Transparent;
             //
             // _CallbackTimer

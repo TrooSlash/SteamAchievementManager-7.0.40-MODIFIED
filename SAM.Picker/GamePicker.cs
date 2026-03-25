@@ -86,7 +86,7 @@ namespace SAM.Picker
 
             this._LogoImageList.Images.Add("Blank", blank);
 
-            Bitmap blankSmall = new(32, 32);
+            Bitmap blankSmall = new(36, 36);
             using (var g = Graphics.FromImage(blankSmall))
             {
                 g.Clear(Color.DimGray);
@@ -571,6 +571,7 @@ namespace SAM.Picker
 
                 this._SuppressItemCheck = true;
                 this._GameListView.Items.Clear();
+                int rowIdx = 0;
                 foreach (var game in this._FilteredGames)
                 {
                     var item = new ListViewItem(game.Name);
@@ -583,9 +584,10 @@ namespace SAM.Picker
                         item.SubItems.Add(FormatAchievements(game));
                     item.Tag = game;
                     item.ForeColor = DarkTheme.Text;
-                    item.BackColor = DarkTheme.DarkBackground;
+                    item.BackColor = rowIdx % 2 == 0 ? DarkTheme.DarkBackground : DarkTheme.Surface;
                     item.Checked = game.IsChecked;
                     this._GameListView.Items.Add(item);
+                    rowIdx++;
                 }
                 this._SuppressItemCheck = false;
 
@@ -759,6 +761,8 @@ namespace SAM.Picker
             foreach (var game in this._Games.Values)
                 appIds.Add(game.Id);
 
+            this._PickerStatusLabel.Text = Localization.Get("ScanningProtected");
+
             var worker = new BackgroundWorker();
             worker.DoWork += (s, e) =>
             {
@@ -766,6 +770,7 @@ namespace SAM.Picker
             };
             worker.RunWorkerCompleted += (s, e) =>
             {
+                this._PickerStatusLabel.Text = "";
                 if (e.Error != null || e.Result == null) return;
                 var scanned = (HashSet<uint>)e.Result;
                 if (!scanned.SetEquals(this._ProtectedGames))
@@ -1081,11 +1086,11 @@ namespace SAM.Picker
             var imageIndex = this._LogoImageList.Images.Count;
             this._LogoImageList.Images.Add(gameInfo.ImageUrl, bitmap);
 
-            Bitmap smallIcon = new(32, 32);
+            Bitmap smallIcon = new(36, 36);
             using (var g = Graphics.FromImage(smallIcon))
             {
                 g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                g.DrawImage(bitmap, 0, 0, 32, 32);
+                g.DrawImage(bitmap, 0, 0, 36, 36);
             }
             this._SmallIconImageList.Images.Add(gameInfo.ImageUrl, smallIcon);
 
@@ -1374,6 +1379,7 @@ namespace SAM.Picker
                 // Populate items
                 this._SuppressItemCheck = true;
                 this._GameListView.Items.Clear();
+                int rowIndex = 0;
                 foreach (var game in this._FilteredGames)
                 {
                     var item = new ListViewItem(game.Name);
@@ -1386,9 +1392,10 @@ namespace SAM.Picker
                         item.SubItems.Add(FormatAchievements(game));
                     item.Tag = game;
                     item.ForeColor = DarkTheme.Text;
-                    item.BackColor = DarkTheme.DarkBackground;
+                    item.BackColor = rowIndex % 2 == 0 ? DarkTheme.DarkBackground : DarkTheme.Surface;
                     item.Checked = game.IsChecked;
                     this._GameListView.Items.Add(item);
+                    rowIndex++;
                 }
                 this._SuppressItemCheck = false;
 
@@ -1824,5 +1831,22 @@ namespace SAM.Picker
                 Localization.Get("DisplayingGames", this._GameListView.Items.Count, this._Games.Count);
         }
 
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            switch (keyData)
+            {
+                case Keys.F5:
+                case Keys.Control | Keys.R:
+                    OnRefresh(this, EventArgs.Empty);
+                    return true;
+                case Keys.Control | Keys.F:
+                    this._SearchGameTextBox.Focus();
+                    return true;
+                case Keys.Control | Keys.S:
+                    OnSettings(this, EventArgs.Empty);
+                    return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
     }
 }

@@ -88,26 +88,39 @@ namespace SAM.API
                 throw new ClientInitializeException(ClientInitializeFailure.CreateSteamPipe, "failed to create pipe");
             }
 
-            this._User = this.SteamClient.ConnectToGlobalUser(this._Pipe);
-            if (this._User == 0)
+            try
             {
-                ApiLogger.Error("Failed to connect to global user", null);
-                throw new ClientInitializeException(ClientInitializeFailure.ConnectToGlobalUser, "failed to connect to global user");
-            }
+                this._User = this.SteamClient.ConnectToGlobalUser(this._Pipe);
+                if (this._User == 0)
+                {
+                    ApiLogger.Error("Failed to connect to global user", null);
+                    throw new ClientInitializeException(ClientInitializeFailure.ConnectToGlobalUser, "failed to connect to global user");
+                }
 
-            this.SteamUtils = this.SteamClient.GetSteamUtils004(this._Pipe);
-            if (appId > 0 && this.SteamUtils.GetAppId() != (uint)appId)
+                this.SteamUtils = this.SteamClient.GetSteamUtils004(this._Pipe);
+                if (appId > 0 && this.SteamUtils.GetAppId() != (uint)appId)
+                {
+                    ApiLogger.Error($"AppId mismatch: expected {appId}, got {this.SteamUtils.GetAppId()}", null);
+                    throw new ClientInitializeException(ClientInitializeFailure.AppIdMismatch, "appID mismatch");
+                }
+
+                this.SteamUser = this.SteamClient.GetSteamUser012(this._User, this._Pipe);
+                this.SteamUserStats = this.SteamClient.GetSteamUserStats013(this._User, this._Pipe);
+                this.SteamApps001 = this.SteamClient.GetSteamApps001(this._User, this._Pipe);
+                this.SteamApps008 = this.SteamClient.GetSteamApps008(this._User, this._Pipe);
+
+                ApiLogger.Info($"Steam client initialized successfully for appId {appId}, SteamId {this.SteamUser.GetSteamId()}");
+            }
+            catch
             {
-                ApiLogger.Error($"AppId mismatch: expected {appId}, got {this.SteamUtils.GetAppId()}", null);
-                throw new ClientInitializeException(ClientInitializeFailure.AppIdMismatch, "appID mismatch");
+                ApiLogger.Warning("Post-pipe initialization failed, releasing pipe handle");
+                if (this._Pipe > 0)
+                {
+                    this.SteamClient.ReleaseSteamPipe(this._Pipe);
+                    this._Pipe = 0;
+                }
+                throw;
             }
-
-            this.SteamUser = this.SteamClient.GetSteamUser012(this._User, this._Pipe);
-            this.SteamUserStats = this.SteamClient.GetSteamUserStats013(this._User, this._Pipe);
-            this.SteamApps001 = this.SteamClient.GetSteamApps001(this._User, this._Pipe);
-            this.SteamApps008 = this.SteamClient.GetSteamApps008(this._User, this._Pipe);
-
-            ApiLogger.Info($"Steam client initialized successfully for appId {appId}, SteamId {this.SteamUser.GetSteamId()}");
         }
 
         ~Client()

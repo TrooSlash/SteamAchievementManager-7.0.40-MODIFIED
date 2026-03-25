@@ -40,6 +40,7 @@ namespace SAM.Picker
             { "CheckingOwnership", "Checking game ownership..." },
             { "CheckingOwnershipPercent", "Checking game ownership... {0}%" },
             { "ScanningLocalGames", "Scanning local Steam library..." },
+            { "ScanningProtected", "Scanning protected achievements..." },
             { "DisplayingGames", "Displaying {0} games. Total {1} games." },
             { "DownloadingIcons", "Downloading {0} game icons..." },
             { "DownloadCancelled", "Game list download was cancelled." },
@@ -160,6 +161,15 @@ namespace SAM.Picker
             { "LogLevelError", "Error" },
             { "NoLogsYet", "No log files yet." },
 
+            // Profile status
+            { "StatusOffline", "Offline" },
+            { "StatusOnline", "Online" },
+            { "StatusBusy", "Busy" },
+            { "StatusAway", "Away" },
+            { "StatusSnooze", "Snooze" },
+            { "StatusLookingToTrade", "Looking to Trade" },
+            { "StatusLookingToPlay", "Looking to Play" },
+
             // Mode short names (for summary)
             { "ModeSimple", "Simple" },
             { "ModeSequential", "Sequential" },
@@ -201,6 +211,7 @@ namespace SAM.Picker
             { "CheckingOwnership", "\u041F\u0440\u043E\u0432\u0435\u0440\u043A\u0430 \u0432\u043B\u0430\u0434\u0435\u043D\u0438\u044F \u0438\u0433\u0440\u0430\u043C\u0438..." },
             { "CheckingOwnershipPercent", "\u041F\u0440\u043E\u0432\u0435\u0440\u043A\u0430 \u0432\u043B\u0430\u0434\u0435\u043D\u0438\u044F \u0438\u0433\u0440\u0430\u043C\u0438... {0}%" },
             { "ScanningLocalGames", "\u0421\u043A\u0430\u043D\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u043B\u043E\u043A\u0430\u043B\u044C\u043D\u043E\u0439 \u0431\u0438\u0431\u043B\u0438\u043E\u0442\u0435\u043A\u0438 Steam..." },
+            { "ScanningProtected", "\u0421\u043A\u0430\u043D\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435 \u0437\u0430\u0449\u0438\u0449\u0451\u043D\u043D\u044B\u0445 \u0434\u043E\u0441\u0442\u0438\u0436\u0435\u043D\u0438\u0439..." },
             { "DisplayingGames", "\u041F\u043E\u043A\u0430\u0437\u0430\u043D\u043E {0} \u0438\u0433\u0440. \u0412\u0441\u0435\u0433\u043E {1} \u0438\u0433\u0440." },
             { "DownloadingIcons", "\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430 {0} \u0438\u043A\u043E\u043D\u043E\u043A \u0438\u0433\u0440..." },
             { "DownloadCancelled", "\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430 \u0441\u043F\u0438\u0441\u043A\u0430 \u0438\u0433\u0440 \u0431\u044B\u043B\u0430 \u043E\u0442\u043C\u0435\u043D\u0435\u043D\u0430." },
@@ -320,6 +331,15 @@ namespace SAM.Picker
             { "LogLevelWarning", "\u041F\u0440\u0435\u0434\u0443\u043F\u0440\u0435\u0436\u0434\u0435\u043D\u0438\u044F" },
             { "LogLevelError", "\u041E\u0448\u0438\u0431\u043A\u0438" },
             { "NoLogsYet", "\u041B\u043E\u0433-\u0444\u0430\u0439\u043B\u043E\u0432 \u043F\u043E\u043A\u0430 \u043D\u0435\u0442." },
+
+            // Profile status
+            { "StatusOffline", "\u041E\u0444\u0444\u043B\u0430\u0439\u043D" },
+            { "StatusOnline", "\u0412 \u0441\u0435\u0442\u0438" },
+            { "StatusBusy", "\u041D\u0435 \u0431\u0435\u0441\u043F\u043E\u043A\u043E\u0438\u0442\u044C" },
+            { "StatusAway", "\u041D\u0435\u0442 \u043D\u0430 \u043C\u0435\u0441\u0442\u0435" },
+            { "StatusSnooze", "\u0421\u043F\u0438\u0442" },
+            { "StatusLookingToTrade", "\u0425\u043E\u0447\u0435\u0442 \u043E\u0431\u043C\u0435\u043D\u0438\u0432\u0430\u0442\u044C\u0441\u044F" },
+            { "StatusLookingToPlay", "\u0425\u043E\u0447\u0435\u0442 \u0438\u0433\u0440\u0430\u0442\u044C" },
 
             // Mode short names (for summary)
             { "ModeSimple", "\u041F\u0440\u043E\u0441\u0442\u043E\u0439" },

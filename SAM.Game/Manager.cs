@@ -985,6 +985,14 @@ namespace SAM.Game
             Log.Information("User clicked Lock All for AppId {AppId}", this._GameId);
             if (this._IsVacProtected && !ConfirmVacAction()) return;
 
+            var result = MessageBox.Show(
+                this,
+                GameLocalization.Get("LockAllConfirm"),
+                GameLocalization.Get("Confirm"),
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+            if (result != DialogResult.Yes) return;
+
             foreach (ListViewItem item in this._AchievementListView.Items)
             {
                 if (item.Tag is Stats.AchievementInfo info && (info.Permission & 3) == 0)
@@ -1456,6 +1464,20 @@ namespace SAM.Game
             this._EnableStatsEditingCheckBox.Text = GameLocalization.Get("StatsEditingAgreement");
             this._VacWarningLabel.Text = GameLocalization.Get("VacWarningText");
             this._VacOverrideButton.Text = GameLocalization.Get("VacOverrideBtn");
+        }
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            switch (keyData)
+            {
+                case Keys.F5:
+                case Keys.Control | Keys.R:
+                    OnRefresh(this, EventArgs.Empty);
+                    return true;
+                case Keys.Control | Keys.S:
+                    OnStore(this, EventArgs.Empty);
+                    return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }
