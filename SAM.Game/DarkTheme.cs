@@ -16,7 +16,6 @@ namespace SAM.Game
         public static readonly Color AccentWarning = Color.FromArgb(255, 179, 71);   // #FFB347
         public static readonly Color AccentDanger = Color.FromArgb(255, 107, 107);   // #FF6B6B
         public static readonly Color Text = Color.FromArgb(232, 234, 237);           // #E8EAED
-        public static readonly Color TextBright = Color.FromArgb(232, 234, 237);     // #E8EAED
         public static readonly Color TextSecondary = Color.FromArgb(154, 160, 166);  // #9AA0A6
         public static readonly Color TextMuted = Color.FromArgb(95, 99, 104);        // #5F6368
         public static readonly Color Border = Color.FromArgb(45, 48, 56);            // #2D3038
@@ -24,6 +23,10 @@ namespace SAM.Game
         public static readonly Color Pressed = Color.FromArgb(108, 99, 255);         // #6C63FF
         public static readonly Color StatusBar = Color.FromArgb(37, 40, 48);         // #252830
         public static readonly Color Selection = Color.FromArgb(46, 43, 74);         // #2E2B4A
+        public static readonly Color DangerBackground = Color.FromArgb(80, 20, 20);  // #501414
+        public static readonly Color DangerSurface = Color.FromArgb(60, 15, 15);     // #3C0F0F
+        public static readonly Color DangerText = Color.FromArgb(255, 180, 180);     // #FFB4B4
+        public static readonly Color ProtectedText = Color.FromArgb(180, 140, 100);  // #B48C64
 
         public static void Apply(Form form)
         {
@@ -41,10 +44,10 @@ namespace SAM.Game
                     case StatusStrip ss:
                         ss.Renderer = new DarkToolStripRenderer();
                         ss.BackColor = StatusBar;
-                        ss.ForeColor = TextBright;
+                        ss.ForeColor = Text;
                         foreach (ToolStripItem item in ss.Items)
                         {
-                            item.ForeColor = TextBright;
+                            item.ForeColor = Text;
                         }
                         break;
 
@@ -58,13 +61,13 @@ namespace SAM.Game
                             if (item is ToolStripTextBox tb)
                             {
                                 tb.BackColor = Surface;
-                                tb.ForeColor = TextBright;
+                                tb.ForeColor = Text;
                                 tb.BorderStyle = BorderStyle.FixedSingle;
                             }
                             if (item is ToolStripComboBox cb)
                             {
                                 cb.BackColor = Surface;
-                                cb.ForeColor = TextBright;
+                                cb.ForeColor = Text;
                             }
                         }
                         break;
@@ -86,7 +89,7 @@ namespace SAM.Game
                         dgv.DefaultCellStyle.BackColor = Surface;
                         dgv.DefaultCellStyle.ForeColor = Text;
                         dgv.DefaultCellStyle.SelectionBackColor = Selection;
-                        dgv.DefaultCellStyle.SelectionForeColor = TextBright;
+                        dgv.DefaultCellStyle.SelectionForeColor = Text;
                         dgv.ColumnHeadersDefaultCellStyle.BackColor = Toolbar;
                         dgv.ColumnHeadersDefaultCellStyle.ForeColor = Text;
                         dgv.EnableHeadersVisualStyles = false;
@@ -102,13 +105,13 @@ namespace SAM.Game
 
                     case TextBox textBox:
                         textBox.BackColor = Surface;
-                        textBox.ForeColor = TextBright;
+                        textBox.ForeColor = Text;
                         textBox.BorderStyle = BorderStyle.FixedSingle;
                         break;
 
                     case ComboBox comboBox:
                         comboBox.BackColor = Surface;
-                        comboBox.ForeColor = TextBright;
+                        comboBox.ForeColor = Text;
                         comboBox.FlatStyle = FlatStyle.Flat;
                         break;
 
@@ -123,7 +126,7 @@ namespace SAM.Game
 
                     case ListView lv:
                         lv.BackColor = DarkBackground;
-                        lv.ForeColor = TextBright;
+                        lv.ForeColor = Text;
                         break;
                 }
 
@@ -150,7 +153,7 @@ namespace SAM.Game
                 }
             }
 
-            using (var brush = new SolidBrush(isSelected ? TextBright : TextSecondary))
+            using (var brush = new SolidBrush(isSelected ? Text : TextSecondary))
             {
                 var sf = new StringFormat
                 {

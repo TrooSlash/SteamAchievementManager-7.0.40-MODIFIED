@@ -115,7 +115,7 @@ namespace SAM.Picker
 
             // Persona name
             using (var nameFont = new Font("Segoe UI", 12f, FontStyle.Bold))
-            using (var nameBrush = new SolidBrush(DarkTheme.TextBright))
+            using (var nameBrush = new SolidBrush(DarkTheme.Text))
             {
                 var nameSize = g.MeasureString(_personaName, nameFont);
                 g.DrawString(_personaName, nameFont, nameBrush, x, avatarY + 2);
@@ -129,7 +129,7 @@ namespace SAM.Picker
                 }
 
                 string statusText = GetStatusText(_personaState);
-                using (var statusFont = new Font("Segoe UI", 8.25f))
+                using (var statusFont = new Font("Segoe UI", 8f))
                 using (var statusBrush = new SolidBrush(DarkTheme.TextSecondary))
                 {
                     g.DrawString(statusText, statusFont, statusBrush, x + 12, statusY);
@@ -138,7 +138,7 @@ namespace SAM.Picker
                 // Country code next to status
                 if (!string.IsNullOrEmpty(_countryCode))
                 {
-                    using (var measureFont = new Font("Segoe UI", 8.25f))
+                    using (var measureFont = new Font("Segoe UI", 8f))
                     {
                         var statusSize = g.MeasureString(statusText, measureFont);
                         using (var countryBrush = new SolidBrush(DarkTheme.TextSecondary))
@@ -162,7 +162,7 @@ namespace SAM.Picker
                 }
                 string levelText = _level.ToString();
                 using (var levelFont = new Font("Segoe UI", 9f, FontStyle.Bold))
-                using (var whiteBrush = new SolidBrush(Color.White))
+                using (var whiteBrush = new SolidBrush(DarkTheme.Text))
                 {
                     var levelSize = g.MeasureString(levelText, levelFont);
                     float lx = rightX + (badgeSize - levelSize.Width) / 2;
@@ -217,7 +217,7 @@ namespace SAM.Picker
 
                 // XP text - show earned / total for current level
                 string xpText = string.Format("XP: {0}/{1}", xpEarnedThisLevel, xpTotalForLevel);
-                using (var xpFont = new Font("Segoe UI", 7.5f))
+                using (var xpFont = new Font("Segoe UI", 8f))
                 using (var xpBrush = new SolidBrush(DarkTheme.TextSecondary))
                 {
                     g.DrawString(xpText, xpFont, xpBrush, barX, barY + barHeight + 2);
@@ -226,7 +226,7 @@ namespace SAM.Picker
                 // Badge count
                 int badgeCountX = barX + barWidth + 14;
                 string badgeCountText = string.Format("Badges: {0}", _badgeCount);
-                using (var bcFont = new Font("Segoe UI", 8.25f))
+                using (var bcFont = new Font("Segoe UI", 8f))
                 using (var bcBrush = new SolidBrush(DarkTheme.TextSecondary))
                 {
                     g.DrawString(badgeCountText, bcFont, bcBrush, badgeCountX, badgeY + 6);

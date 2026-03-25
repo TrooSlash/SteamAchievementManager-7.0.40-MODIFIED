@@ -34,7 +34,7 @@ namespace SAM.Picker
             this.StartPosition = FormStartPosition.CenterParent;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.ClientSize = new Size(420, 480);
+            this.ClientSize = new Size(420, 466);
             this.BackColor = DarkTheme.DarkBackground;
             this.ForeColor = DarkTheme.Text;
             this.Font = new Font("Segoe UI", 9f);
@@ -45,17 +45,17 @@ namespace SAM.Picker
                 Text = Localization.Get("Language"),
                 Location = new Point(15, 18),
                 Size = new Size(80, 20),
-                ForeColor = DarkTheme.TextBright,
+                ForeColor = DarkTheme.Text,
                 Font = new Font("Segoe UI", 9f, FontStyle.Bold),
             };
 
             _LanguageCombo = new ComboBox
             {
-                Location = new Point(100, 15),
+                Location = new Point(100, 14),
                 Size = new Size(180, 23),
                 DropDownStyle = ComboBoxStyle.DropDownList,
                 BackColor = DarkTheme.Surface,
-                ForeColor = DarkTheme.TextBright,
+                ForeColor = DarkTheme.Text,
                 FlatStyle = FlatStyle.Flat,
             };
             _LanguageCombo.Items.AddRange(new object[] { "English", "\u0420\u0443\u0441\u0441\u043A\u0438\u0439" });
@@ -65,16 +65,16 @@ namespace SAM.Picker
             var viewLabel = new Label
             {
                 Text = Localization.Get("ViewMode"),
-                Location = new Point(15, 58),
+                Location = new Point(15, 53),
                 Size = new Size(160, 20),
-                ForeColor = DarkTheme.TextBright,
+                ForeColor = DarkTheme.Text,
                 Font = new Font("Segoe UI", 9f, FontStyle.Bold),
             };
 
             _ListRadio = new RadioButton
             {
                 Text = Localization.Get("ListMode"),
-                Location = new Point(20, 82),
+                Location = new Point(20, 75),
                 Size = new Size(120, 22),
                 ForeColor = DarkTheme.Text,
                 Checked = !isTileView,
@@ -83,7 +83,7 @@ namespace SAM.Picker
             _TilesRadio = new RadioButton
             {
                 Text = Localization.Get("TilesMode"),
-                Location = new Point(150, 82),
+                Location = new Point(150, 75),
                 Size = new Size(120, 22),
                 ForeColor = DarkTheme.Text,
                 Checked = isTileView,
@@ -93,18 +93,18 @@ namespace SAM.Picker
             var apiLabel = new Label
             {
                 Text = Localization.Get("SteamApiKey"),
-                Location = new Point(15, 120),
+                Location = new Point(15, 113),
                 Size = new Size(390, 20),
-                ForeColor = DarkTheme.TextBright,
+                ForeColor = DarkTheme.Text,
                 Font = new Font("Segoe UI", 9f, FontStyle.Bold),
             };
 
             _ApiKeyTextBox = new TextBox
             {
-                Location = new Point(15, 143),
+                Location = new Point(15, 135),
                 Size = new Size(320, 23),
                 BackColor = DarkTheme.Surface,
-                ForeColor = DarkTheme.TextBright,
+                ForeColor = DarkTheme.Text,
                 BorderStyle = BorderStyle.FixedSingle,
                 Text = AppSettings.SteamApiKey,
                 Font = new Font("Consolas", 9f),
@@ -114,7 +114,7 @@ namespace SAM.Picker
             var showHideButton = new Button
             {
                 Text = "\uD83D\uDC41",
-                Location = new Point(338, 142),
+                Location = new Point(338, 134),
                 Size = new Size(30, 25),
                 BackColor = DarkTheme.Surface,
                 ForeColor = DarkTheme.TextSecondary,
@@ -136,12 +136,12 @@ namespace SAM.Picker
             var testApiButton = new Button
             {
                 Text = Localization.Get("TestApi"),
-                Location = new Point(372, 142),
+                Location = new Point(372, 134),
                 Size = new Size(33, 25),
                 BackColor = DarkTheme.Toolbar,
                 ForeColor = DarkTheme.Text,
                 FlatStyle = FlatStyle.Flat,
-                Font = new Font("Segoe UI", 7.5f),
+                Font = new Font("Segoe UI", 8f),
             };
             testApiButton.FlatAppearance.BorderColor = DarkTheme.Border;
             testApiButton.FlatAppearance.BorderSize = 1;
@@ -169,14 +169,14 @@ namespace SAM.Picker
                     if (we.Error != null || we.Result == null)
                     {
                         Log.Warning("API key test failed");
-                        testApiButton.ForeColor = Color.FromArgb(255, 100, 100);
+                        testApiButton.ForeColor = DarkTheme.AccentDanger;
                         MessageBox.Show(this, Localization.Get("ApiKeyInvalid"),
                             Localization.Get("TestApi"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     else
                     {
                         Log.Information("API key test succeeded");
-                        testApiButton.ForeColor = Color.FromArgb(100, 220, 100);
+                        testApiButton.ForeColor = DarkTheme.AccentSecondary;
                         MessageBox.Show(this, Localization.Get("ApiKeyValid"),
                             Localization.Get("TestApi"), MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
@@ -187,7 +187,7 @@ namespace SAM.Picker
             var apiHint = new Label
             {
                 Text = Localization.Get("SteamApiKeyHint"),
-                Location = new Point(15, 170),
+                Location = new Point(15, 162),
                 Size = new Size(390, 130),
                 ForeColor = DarkTheme.TextSecondary,
                 Font = new Font("Segoe UI", 8f),
@@ -196,11 +196,11 @@ namespace SAM.Picker
             var apiLink = new LinkLabel
             {
                 Text = "steamcommunity.com/dev/apikey",
-                Location = new Point(15, 305),
+                Location = new Point(15, 297),
                 Size = new Size(390, 18),
                 LinkColor = DarkTheme.Accent,
                 ActiveLinkColor = DarkTheme.AccentSecondary,
-                Font = new Font("Segoe UI", 8.5f),
+                Font = new Font("Segoe UI", 8f),
             };
             apiLink.LinkClicked += (s, e) =>
             {
@@ -216,19 +216,19 @@ namespace SAM.Picker
             var logLevelLabel = new Label
             {
                 Text = Localization.Get("LogLevel"),
-                Location = new Point(15, 338),
+                Location = new Point(15, 333),
                 Size = new Size(160, 20),
-                ForeColor = DarkTheme.TextBright,
+                ForeColor = DarkTheme.Text,
                 Font = new Font("Segoe UI", 9f, FontStyle.Bold),
             };
 
             _LogLevelCombo = new ComboBox
             {
-                Location = new Point(180, 335),
+                Location = new Point(180, 329),
                 Size = new Size(130, 23),
                 DropDownStyle = ComboBoxStyle.DropDownList,
                 BackColor = DarkTheme.Surface,
-                ForeColor = DarkTheme.TextBright,
+                ForeColor = DarkTheme.Text,
                 FlatStyle = FlatStyle.Flat,
             };
             _LogLevelCombo.Items.AddRange(new object[]
@@ -245,7 +245,7 @@ namespace SAM.Picker
             var openLogsButton = new Button
             {
                 Text = Localization.Get("OpenLogFolder"),
-                Location = new Point(320, 334),
+                Location = new Point(320, 328),
                 Size = new Size(85, 25),
                 BackColor = DarkTheme.Toolbar,
                 ForeColor = DarkTheme.Text,
@@ -274,10 +274,10 @@ namespace SAM.Picker
             {
                 Text = Localization.Get("OK"),
                 DialogResult = DialogResult.OK,
-                Location = new Point(230, 430),
+                Location = new Point(230, 420),
                 Size = new Size(80, 30),
                 BackColor = DarkTheme.Accent,
-                ForeColor = DarkTheme.TextBright,
+                ForeColor = DarkTheme.Text,
                 FlatStyle = FlatStyle.Flat,
                 Font = new Font("Segoe UI", 9f, FontStyle.Bold),
             };
@@ -287,7 +287,7 @@ namespace SAM.Picker
             {
                 Text = Localization.Get("Cancel"),
                 DialogResult = DialogResult.Cancel,
-                Location = new Point(320, 430),
+                Location = new Point(320, 420),
                 Size = new Size(80, 30),
                 BackColor = DarkTheme.Toolbar,
                 ForeColor = DarkTheme.Text,

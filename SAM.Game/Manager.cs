@@ -1304,7 +1304,7 @@ namespace SAM.Game
             if (e.Item.Selected)
                 bgColor = DarkTheme.Selection;
             else if (isProtected)
-                bgColor = Color.FromArgb(40, 25, 25);
+                bgColor = DarkTheme.DangerBackground;
             else if (isOddRow)
                 bgColor = Color.FromArgb(28, 30, 38);
             else
@@ -1326,7 +1326,7 @@ namespace SAM.Game
             if (isSelected)
                 bgColor = DarkTheme.Selection;
             else if (isProtected)
-                bgColor = Color.FromArgb(40, 25, 25);
+                bgColor = DarkTheme.DangerBackground;
             else if (isOddRow)
                 bgColor = Color.FromArgb(28, 30, 38); // alternating row
             else
@@ -1391,7 +1391,7 @@ namespace SAM.Game
                         : e.Item.Text;
                     var textRect = new Rectangle(textX, e.Bounds.Y, textWidth, e.Bounds.Height);
                     Color textColor = isProtected
-                        ? Color.FromArgb(180, 140, 100)
+                        ? DarkTheme.ProtectedText
                         : isChecked ? DarkTheme.AccentSecondary : DarkTheme.Text;
                     TextRenderer.DrawText(e.Graphics, displayName, this.Font, textRect, textColor,
                         TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);

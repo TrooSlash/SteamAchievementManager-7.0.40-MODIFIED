@@ -1461,11 +1461,11 @@ namespace SAM.Picker
             this._CheckedCountLabel.Text = $"\u2611 {count}/32";
 
             if (count == 0)
-                this._CheckedCountLabel.ForeColor = Color.FromArgb(140, 160, 180);
+                this._CheckedCountLabel.ForeColor = DarkTheme.TextSecondary;
             else if (count >= 32)
-                this._CheckedCountLabel.ForeColor = Color.FromArgb(255, 100, 100);
+                this._CheckedCountLabel.ForeColor = DarkTheme.AccentDanger;
             else
-                this._CheckedCountLabel.ForeColor = Color.FromArgb(100, 200, 130);
+                this._CheckedCountLabel.ForeColor = DarkTheme.AccentSecondary;
         }
 
         private void OnGameListViewDrawItem(object sender, DrawListViewItemEventArgs e)
@@ -1518,7 +1518,7 @@ namespace SAM.Picker
                     g.FillRectangle(overlayBrush, textRect);
                 }
                 using (var font = new Font("Segoe UI", 8f))
-                using (var textBrush = new SolidBrush(DarkTheme.TextBright))
+                using (var textBrush = new SolidBrush(DarkTheme.Text))
                 {
                     var sf = new StringFormat
                     {

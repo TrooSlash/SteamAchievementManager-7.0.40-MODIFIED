@@ -178,7 +178,7 @@
             // 
             // _VacWarningPanel
             // 
-            this._VacWarningPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this._VacWarningPanel.BackColor = DarkTheme.DangerBackground;
             this._VacWarningPanel.Controls.Add(this._VacWarningLabel);
             this._VacWarningPanel.Controls.Add(this._VacOverrideButton);
             this._VacWarningPanel.Dock = System.Windows.Forms.DockStyle.Top;
@@ -191,8 +191,8 @@
             // _VacWarningLabel
             // 
             this._VacWarningLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._VacWarningLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this._VacWarningLabel.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            this._VacWarningLabel.ForeColor = DarkTheme.DangerText;
+            this._VacWarningLabel.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold);
             this._VacWarningLabel.Name = "_VacWarningLabel";
             this._VacWarningLabel.Size = new System.Drawing.Size(560, 48);
             this._VacWarningLabel.Text = "⚠ VAC / Anti-Cheat Protected — Editing achievements or statistics may result in a ban.";
@@ -200,10 +200,10 @@
             // 
             // _VacOverrideButton
             // 
-            this._VacOverrideButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(15)))), ((int)(((byte)(15)))));
+            this._VacOverrideButton.BackColor = DarkTheme.DangerSurface;
             this._VacOverrideButton.Dock = System.Windows.Forms.DockStyle.Right;
             this._VacOverrideButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this._VacOverrideButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(160)))), ((int)(((byte)(160)))));
+            this._VacOverrideButton.ForeColor = DarkTheme.DangerText;
             this._VacOverrideButton.Name = "_VacOverrideButton";
             this._VacOverrideButton.Size = new System.Drawing.Size(130, 48);
             this._VacOverrideButton.Text = "I understand the risks";

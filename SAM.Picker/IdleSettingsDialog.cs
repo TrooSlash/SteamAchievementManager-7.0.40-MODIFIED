@@ -100,9 +100,9 @@ namespace SAM.Picker
             var modeLabel = new Label
             {
                 Text = Localization.Get("IdleModeLabel"),
-                Location = new Point(15, 15),
+                Location = new Point(15, 16),
                 Size = new Size(80, 20),
-                ForeColor = DarkTheme.TextBright,
+                ForeColor = DarkTheme.Text,
                 Font = new Font("Segoe UI", 9f, FontStyle.Bold),
             };
 
@@ -112,7 +112,7 @@ namespace SAM.Picker
                 Size = new Size(270, 23),
                 DropDownStyle = ComboBoxStyle.DropDownList,
                 BackColor = DarkTheme.Surface,
-                ForeColor = DarkTheme.TextBright,
+                ForeColor = DarkTheme.Text,
                 FlatStyle = FlatStyle.Flat,
             };
             _ModeComboBox.Items.AddRange(new object[] {
@@ -127,7 +127,7 @@ namespace SAM.Picker
                 Location = new Point(378, 11),
                 Size = new Size(28, 25),
                 BackColor = DarkTheme.Accent,
-                ForeColor = DarkTheme.TextBright,
+                ForeColor = DarkTheme.Text,
                 FlatStyle = FlatStyle.Flat,
                 Font = new Font("Segoe UI", 9f, FontStyle.Bold),
                 Cursor = Cursors.Hand,
@@ -140,9 +140,9 @@ namespace SAM.Picker
             {
                 Location = new Point(15, 45),
                 Size = new Size(410, 72),
-                ForeColor = Color.FromArgb(140, 180, 220),
-                BackColor = Color.FromArgb(30, 35, 45),
-                Font = new Font("Segoe UI", 8.5f),
+                ForeColor = DarkTheme.TextSecondary,
+                BackColor = DarkTheme.Surface,
+                Font = new Font("Segoe UI", 8f),
                 Padding = new Padding(8, 6, 8, 6),
                 BorderStyle = BorderStyle.FixedSingle,
             };
@@ -168,7 +168,7 @@ namespace SAM.Picker
                 DecimalPlaces = 1,
                 Increment = 0.5m,
                 BackColor = DarkTheme.Surface,
-                ForeColor = DarkTheme.TextBright,
+                ForeColor = DarkTheme.Text,
             };
 
             _IndefiniteCheckBox = new CheckBox
@@ -201,7 +201,7 @@ namespace SAM.Picker
                 Maximum = 32,
                 Value = Math.Min(availableGames, 32),
                 BackColor = DarkTheme.Surface,
-                ForeColor = DarkTheme.TextBright,
+                ForeColor = DarkTheme.Text,
             };
 
             py += 35;
@@ -222,7 +222,7 @@ namespace SAM.Picker
                 Maximum = 1440,
                 Value = 30,
                 BackColor = DarkTheme.Surface,
-                ForeColor = DarkTheme.TextBright,
+                ForeColor = DarkTheme.Text,
             };
 
             _RestartLabel = new Label
@@ -241,7 +241,7 @@ namespace SAM.Picker
                 Maximum = 1440,
                 Value = 30,
                 BackColor = DarkTheme.Surface,
-                ForeColor = DarkTheme.TextBright,
+                ForeColor = DarkTheme.Text,
             };
 
             // Schedule controls
@@ -261,7 +261,7 @@ namespace SAM.Picker
                 Maximum = 23,
                 Value = 23,
                 BackColor = DarkTheme.Surface,
-                ForeColor = DarkTheme.TextBright,
+                ForeColor = DarkTheme.Text,
             };
 
             _ScheduleColon1 = new Label
@@ -269,7 +269,7 @@ namespace SAM.Picker
                 Text = ":",
                 Location = new Point(190, py + 3),
                 Size = new Size(10, 20),
-                ForeColor = DarkTheme.TextBright,
+                ForeColor = DarkTheme.Text,
                 Font = new Font("Segoe UI", 10f, FontStyle.Bold),
             };
 
@@ -281,7 +281,7 @@ namespace SAM.Picker
                 Maximum = 59,
                 Value = 0,
                 BackColor = DarkTheme.Surface,
-                ForeColor = DarkTheme.TextBright,
+                ForeColor = DarkTheme.Text,
             };
 
             py += 30;
@@ -302,7 +302,7 @@ namespace SAM.Picker
                 Maximum = 23,
                 Value = 7,
                 BackColor = DarkTheme.Surface,
-                ForeColor = DarkTheme.TextBright,
+                ForeColor = DarkTheme.Text,
             };
 
             _ScheduleColon2 = new Label
@@ -310,7 +310,7 @@ namespace SAM.Picker
                 Text = ":",
                 Location = new Point(190, py + 3),
                 Size = new Size(10, 20),
-                ForeColor = DarkTheme.TextBright,
+                ForeColor = DarkTheme.Text,
                 Font = new Font("Segoe UI", 10f, FontStyle.Bold),
             };
 
@@ -322,7 +322,7 @@ namespace SAM.Picker
                 Maximum = 59,
                 Value = 0,
                 BackColor = DarkTheme.Surface,
-                ForeColor = DarkTheme.TextBright,
+                ForeColor = DarkTheme.Text,
             };
 
             // === Info summary label ===
@@ -343,7 +343,7 @@ namespace SAM.Picker
                 Location = new Point(210, 340),
                 Size = new Size(110, 30),
                 BackColor = DarkTheme.Accent,
-                ForeColor = DarkTheme.TextBright,
+                ForeColor = DarkTheme.Text,
                 FlatStyle = FlatStyle.Flat,
                 Font = new Font("Segoe UI", 9f, FontStyle.Bold),
             };
