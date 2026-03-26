@@ -27,6 +27,9 @@ A heavily modified version of [Steam Achievement Manager](https://github.com/gib
   - [View Modes](#view-modes)
   - [Playtime Data](#playtime-data)
   - [Localization](#localization)
+  - [Protected Achievement Detection](#protected-achievement-detection)
+  - [Logging](#logging)
+  - [Keyboard Shortcuts](#keyboard-shortcuts)
   - [Achievement Editor](#achievement-editor)
 - [Command Line Arguments](#command-line-arguments)
 - [Project Structure](#project-structure)
@@ -76,6 +79,10 @@ Output: `upload\SAM.Picker.exe`, `upload\SAM.Game.exe`
 | **Graceful Idle Shutdown** | Named EventWaitHandle signals for clean SteamAPI disconnection |
 | **Manifest Cleanup** | Automatic removal of orphaned `appmanifest_*.acf` files after idle |
 | **Batch Unlock via CLI** | `--unlock-all` argument to unlock all achievements without GUI |
+| **Protected Achievement Detection** | Automatic background scan of Steam schema files; lock icon in game list, visual markers in editor, "Hide protected" filter |
+| **File Logging** | Serilog-based logging to `lib/logs/` with daily rotation, configurable log level, "Open Logs" button in Settings |
+| **API Key Encryption** | Steam API key encrypted via Windows DPAPI (`ENC:` prefix in settings file) |
+| **Keyboard Shortcuts** | F5/Ctrl+R (refresh), Ctrl+F (search), Ctrl+S (settings/save) |
 
 ### Improvements and Fixes
 
@@ -94,6 +101,12 @@ Output: `upload\SAM.Picker.exe`, `upload\SAM.Game.exe`
 | **Protected Achievements** | Visual highlight for non-modifiable achievements |
 | **Thread Safety** | Thread-safe collections for concurrent download tracking |
 | **Memory** | Proper WebClient disposal and Bitmap stream handling |
+| **HTTP Timeouts** | 10-second timeout on all WebClient calls (was infinite) |
+| **Pipe Safety** | Steam pipe handle released on partial Client.Initialize() failure |
+| **Native Memory** | AllocHGlobal/FreeHGlobal wrapped in try-finally |
+| **Design System** | All colors centralized in shared DarkPalette; semantic tokens replace hardcoded values |
+| **Architecture** | Logo download extracted to service class; AssemblyResolve handler shared via Bootstrap |
+| **Unit Tests** | 56 NUnit tests covering XP formula, schedule window, playtime formatting, VDF parser, permission flags |
 
 ### Unchanged
 
@@ -195,7 +208,7 @@ A dedicated window that opens when idle sessions start:
 - Columns: Game, AppId, Type, Hours, Last Played, Achievements (with API key)
 - Sortable by clicking column headers (ascending/descending toggle)
 - Checkboxes for batch selection (up to 32 games)
-- Small 32x32 game icons
+- Small 36x36 game icons with alternating row backgrounds
 
 **Tile View**:
 - Card-style grid with game cover images (184x69)
@@ -231,6 +244,36 @@ Localized elements:
 - API key instructions
 
 Game names are not translated (they come from Steam).
+
+### Protected Achievement Detection
+
+SAM automatically scans Steam's local schema files (`appcache/stats/UserGameStatsSchema_*.bin`) in the background to detect games with server-validated achievements.
+
+- Games with protected achievements show a lock icon in the game list (e.g., `12/50`)
+- Inside the editor, protected achievements have a lock overlay, golden text, and a tooltip
+- Title bar shows count: `Game Name | 3 protected`
+- "Hide protected" filter button in the toolbar
+- Warning dialog when all achievements in a game are protected
+- Results cached in `lib/protected_cache.txt` with 7-day expiry and cross-process safety
+
+### Logging
+
+File-based diagnostics using Serilog. All errors and key actions are recorded automatically.
+
+- Log files: `lib/logs/sam-picker-{date}.log`, `lib/logs/sam-game-{appId}-{date}.log`
+- Log level configurable in Settings: Debug / Information / Warning / Error
+- Changes apply instantly without restart
+- "Open Logs" button in Settings for quick access
+- Automatic cleanup: daily rotation, 10 MB size limit, keeps last 7 files
+- Crash protection: unhandled exceptions logged before exit
+
+### Keyboard Shortcuts
+
+| Shortcut | SAM.Picker | SAM.Game |
+|----------|------------|----------|
+| **F5** / **Ctrl+R** | Refresh game list | Refresh achievements |
+| **Ctrl+F** | Focus search box | — |
+| **Ctrl+S** | Open Settings | Save changes |
 
 ### Achievement Editor
 
@@ -273,36 +316,47 @@ SAM.Game.exe <AppId> --unlock-all       -- Unlock all achievements (no GUI)
 
 ```
 SAM.sln
-SAM.API/                           -- Steam API library (UNCHANGED)
+SAM.API/                           -- Steam API library
   Steam/                           -- Steam client connection and pipe management
   Wrappers/                        -- Interface wrappers (SteamUserStats, SteamApps, etc.)
   Types/                           -- Data types (UserStatsReceived, AchievementInfo, etc.)
+  Bootstrap.cs                     -- Shared AssemblyResolve handler for lib/ DLLs
+  Logging/ApiLogger.cs             -- Logging abstraction (no Serilog dependency)
 
 SAM.Picker/                        -- Main application (game library browser)
   GamePicker.cs                    -- Main form: game list, filters, sorting, parallel loading
   GamePicker.Designer.cs           -- Form layout and control definitions
   GameInfo.cs                      -- Game data model (id, type, playtime, achievements)
   MyListView.cs                    -- Custom ListView with double-buffering
-  ProfilePanel.cs                  -- [NEW] Steam profile display panel
-  PlaytimeReader.cs                -- [NEW] localconfig.vdf parser for playtime data
-  SteamWebApi.cs                   -- [NEW] Steam Web API client (achievements, profile, badges)
-  AppSettings.cs                   -- [NEW] Persistent settings (API key storage)
-  ActiveGamesForm.cs               -- [NEW] Active idle games monitor
-  IdleSettingsDialog.cs            -- [NEW] Idle mode configuration dialog
-  SettingsDialog.cs                -- [NEW] Language, view, and API key settings
-  Localization.cs                  -- [NEW] English/Russian localization system
-  DarkTheme.cs                     -- [NEW] Theme engine with custom renderers
+  ProfilePanel.cs                  -- Steam profile display panel
+  PlaytimeReader.cs                -- localconfig.vdf parser for playtime data
+  SteamWebApi.cs                   -- Steam Web API client (achievements, profile, badges)
+  AppSettings.cs                   -- Persistent settings (API key, encryption)
+  ActiveGamesForm.cs               -- Active idle games monitor
+  IdleSettingsDialog.cs            -- Idle mode configuration dialog
+  SettingsDialog.cs                -- Language, view, API key, and log level settings
+  Localization.cs                  -- English/Russian localization system
+  DarkTheme.cs                     -- Theme engine with custom renderers
+  DarkPalette.cs                   -- Shared color palette (compile-linked to SAM.Game)
+  LogSetup.cs                      -- Serilog initialization and log level switching
+  LogoDownloadService.cs           -- Event-based parallel logo download service
 
 SAM.Game/                          -- Achievement and statistics editor
   Program.cs                       -- Entry point, headless modes, graceful shutdown
   Manager.cs                       -- Achievement/stats form, VAC detection, global %
   Manager.Designer.cs              -- Form layout
   Stats/AchievementInfo.cs         -- Achievement data model
-  DarkTheme.cs                     -- [NEW] Theme for editor window
-  GameLocalization.cs              -- [NEW] Editor localization (reads SAM_LANGUAGE env var)
-```
+  DarkTheme.cs                     -- Theme for editor window (delegates to DarkPalette)
+  GameLocalization.cs              -- Editor localization (reads SAM_LANGUAGE env var)
+  LogSetup.cs                      -- Serilog initialization for SAM.Game
 
-Files marked `[NEW]` were created for this modified version. All other files are modified from the original.
+SAM.Tests/                         -- Unit tests (NUnit)
+  PlaytimeFormattingTests.cs       -- FormatPlaytime, FormatLastPlayed
+  XpProgressTests.cs               -- XP progress formula
+  ScheduleWindowTests.cs           -- Idle schedule time window
+  VdfParserTests.cs                -- localconfig.vdf parser
+  PermissionFlagsTests.cs          -- StatFlags bitmask logic
+```
 
 ---
 
